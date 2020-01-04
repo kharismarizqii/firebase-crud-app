@@ -1,5 +1,6 @@
 package com.kharismarizqii.crudapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -53,6 +54,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         })
+
+        listMhs.setOnItemClickListener{ parent, view, position, id ->
+            val mahasiswa = mhsList.get(position)
+
+            val intent = Intent(this@MainActivity, AddMataKuliahActivity::class.java)
+            intent.putExtra(AddMataKuliahActivity.EXTRA_ID, mahasiswa.id)
+            intent.putExtra(AddMataKuliahActivity.EXTRA_NAMA, mahasiswa.nama)
+            startActivity(intent)
+        }
     }
 
     override fun onClick(v: View?) {
