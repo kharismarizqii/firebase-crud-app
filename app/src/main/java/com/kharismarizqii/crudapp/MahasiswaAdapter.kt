@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.database.FirebaseDatabase
 
 class MahasiswaAdapter(val mCtx : Context, val layoutResId : Int, val mhsList :List<Mahasiswa> ) :ArrayAdapter<Mahasiswa> (mCtx, layoutResId, mhsList) {
@@ -70,13 +71,27 @@ class MahasiswaAdapter(val mCtx : Context, val layoutResId : Int, val mhsList :L
 
             val mahasiswa = Mahasiswa(mahasiswa.id, nama, alamat)
 
+
             dbMhs.child(mahasiswa.id).setValue(mahasiswa)
 
             Toast.makeText(mCtx, "Data berhasil di update", Toast.LENGTH_SHORT).show()
 
         }
 
-        builder.setNegativeButton("No"){p0,p1 ->
+        builder.setNeutralButton("no"){p0,p1 ->
+
+        }
+
+
+        builder.setNegativeButton("delete"){p0,p1 ->
+
+            val dbMhs =  FirebaseDatabase.getInstance().getReference("mahasiswa").child(mahasiswa.id)
+            val dbMatkul = FirebaseDatabase.getInstance().getReference("mata_kuliah").child(mahasiswa.id)
+
+            dbMhs.removeValue()
+            dbMatkul.removeValue()
+
+            Toast.makeText(mCtx, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
 
         }
 
